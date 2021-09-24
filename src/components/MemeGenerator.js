@@ -30,6 +30,7 @@ export default function MemeGenerator() {
   return (
     <article>
       <select id="templateId" value={templateId} onChange={changeCustomMeme}>
+        <option> Select a Meme </option>
         {memeTemplate.map((item) => (
           <option value={item.id} key={item.id}>
             {item.name}
