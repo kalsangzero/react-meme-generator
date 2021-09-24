@@ -1,34 +1,42 @@
-import { useState } from 'react';
+import { saveAs } from 'file-saver';
+import { useEffect, useState } from 'react';
 
 export default function MemeGenerator() {
-  const [topName, setTopName] = useState('');
-  const [bottomName, setBottomName] = useState('');
+  const [topInput, setTopInput] = useState('');
+
+  const [bottomInput, setBottomInput] = useState('');
   const [downloadMemes, setDownloadMemes] = useState('');
   const [templateId, setTemplateId] = useState('');
-  // const imageUrl = `https://api.memegen.link/images/${imageId[2]}/${topName[0]}${bottomName[1]}.png`;
-  // const imageUrl = `https://api.memegen.link/images/bender`;
+  const [memeTemplate, setMemeTemplate] = useState([]);
   const [url, setUrl] = useState('https://api.memegen.link/images/bender');
+  const fileSaver = require('file-saver');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.memegen.link/templates');
+        const json = await response.json();
+        setMemeTemplate(json);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const changeCustomMeme = (event) => {
+    setTemplateId(event.currentTarget.value);
+  };
 
   return (
     <article>
-      <label>
-        <select
-          value={templateId}
-          onChange={(event) => setTemplateId(event.currentTarget.value)}
-        >
-          <option>-- Select One of The following Options -- </option>
-          <option value="awesome">Socially Awesome Penguin</option>
-          <option value="bender">Bender</option>
-          <option value="agnes">Agnes Harkness Winking</option>
-          <option value="interesting">Interesting</option>
-          <option value="pigeon">Is This a Pigeon?</option>
-          <option value="spiderman">Spider-Man Pointing at Spider-Man</option>
-          <option value="trump">Donald Trump</option>
-          <option value="whatyear">What Year Is It?</option>
-          <option value="yallgot">Y'all Got Any More of Them</option>
-          <option value="zero-wing">All Your Base Are Belong to Us</option>
-        </select>
-      </label>
+      <select id="templateId" value={templateId} onChange={changeCustomMeme}>
+        {memeTemplate.map((item) => (
+          <option value={item.id} key={item.id}>
+            {item.name}
+          </option>
+        ))}
+      </select>
       {/*  DONT MAKE ALL IN FORM BECAUSE IF YOU CREATE A BUTTON:: IT WILL SUBMIT AND ALWAY REFRESH A PAGE
 
 
@@ -40,13 +48,14 @@ export default function MemeGenerator() {
           onChange={(event) => setTemplateId(event.currentTarget.value)}
         />
       </label> */}
-
       <br />
       <label>
-        Above Words:
+        Above Input:
         <input
-          value={topName}
-          onChange={(event) => setTopName(event.currentTarget.value)}
+          value={topInput}
+          onChange={(event) =>
+            setTopInput(event.currentTarget.value.replace(/ /g, '-'))
+          }
         />
         {/* if you try to type the value of inside text show [object][object]... and other input not accepted.
         It is a controlled component because we are controlling the value here..react will re render when anyone types in
@@ -54,10 +63,12 @@ export default function MemeGenerator() {
       </label>
       <br />
       <label>
-        Below Words:
+        Below Input:
         <input
-          value={bottomName}
-          onChange={(event) => setBottomName(event.currentTarget.value)}
+          value={bottomInput}
+          onChange={(event) =>
+            setBottomInput(event.currentTarget.value.replace(/ /g, '-'))
+          }
         />
       </label>
       <br />
@@ -66,22 +77,21 @@ export default function MemeGenerator() {
         onClick={() =>
           /* such command inside jsx shouldnt use {}after function otherwise return is necessary */
           setUrl(
-            `https://api.memegen.link/images/${templateId}/${topName}/${bottomName}`,
+            `https://api.memegen.link/images/${templateId}/${topInput}/${bottomInput}`,
           )
         }
       >
-        <i class="fa fa-download"> </i> Generate
+        Generate
       </button>
 
       <button
         class="btn"
         value={downloadMemes}
         onClick={() => {
-          //setDownloadMemes();
-          //value isnt change asap
+          fileSaver.saveAs(url, 'image.jpg');
         }}
       >
-        <i class="fa fa-download"> </i> Download
+        Download
       </button>
       <br />
 
