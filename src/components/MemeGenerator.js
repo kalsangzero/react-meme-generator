@@ -73,7 +73,7 @@ export default function MemeGenerator() {
       </label>
       <br />
       <button
-        class="btn"
+        className="btn"
         onClick={() =>
           /* such command inside jsx shouldnt use {}after function otherwise return is necessary */
           setUrl(
@@ -85,7 +85,7 @@ export default function MemeGenerator() {
       </button>
 
       <button
-        class="btn"
+        className="btn"
         value={downloadMemes}
         onClick={() => {
           fileSaver.saveAs(url, 'image.jpg');
