@@ -7,12 +7,3 @@ const Header = () => {
 };
 
 export default Header;
-
-const Paragraph = () => {
-  return (
-    <>
-      <p>This is the trial of taking other components. </p>
-      <p>This is the trial of taking other components. </p>
-    </>
-  );
-};

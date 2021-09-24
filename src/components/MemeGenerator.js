@@ -5,7 +5,7 @@ export default function MemeGenerator() {
   const [topInput, setTopInput] = useState('');
 
   const [bottomInput, setBottomInput] = useState('');
-  const [downloadMemes, setDownloadMemes] = useState('');
+  const [downloadMemes] = useState('');
   const [templateId, setTemplateId] = useState('');
   const [memeTemplate, setMemeTemplate] = useState([]);
   const [url, setUrl] = useState('https://api.memegen.link/images/bender');
