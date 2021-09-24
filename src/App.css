@@ -6,7 +6,7 @@ article {
   height: 500px;
   padding: 20px;
   border-radius: 15px;
-  background-color: skyblue;
+  background-color: rgba(160, 114, 28, 0.041);
 }
 h1 {
   text-align: center;
